@@ -28,6 +28,10 @@ if ( Meteor.is_client ) {
 		},
 		noop = function(){};
 	
+	/**
+	 * If a callback exists for the page, return it.
+	 * Otherwise, return an empty function.
+	 */
 	function getCallback( data ) {
 		return callbacks.hasOwnProperty( data ) ? callbacks[ data ] : noop;
 	}
@@ -43,6 +47,17 @@ if ( Meteor.is_client ) {
 	 * so we assign this Block Helper to a default template.
 	 */
 	Template.body.page_is = function( data, options ) {
+		/**
+		 * This will test the currently set page against the
+		 * data (string) passed in the template.
+		 * 
+		 * If they are the same, it will then schedule a callback
+		 * to happen as soon as possible before returning the
+		 * content of the block.
+		 * 
+		 * If they are not the same, it will return whatever is
+		 * in the {{else}} block.
+		 */
 		if ( Session.equals( 'page', data ) ) {
 			setTimeout( getCallback( data ), 0 );
 			return options.fn( this );
@@ -68,12 +83,16 @@ if ( Meteor.is_client ) {
 		/**
 		 * Override handling for links.
 		 * 
-		 * Do it this way to handle elements dynamically added later on.
+		 * Do it this way to handle link elements dynamically added later on.
 		 */
 		$( document ).on( 'click', function( e ) {
 			if ( e.target.nodeName === 'A' ) {
 				var $this = $( e.target );
 				
+				/**
+				 * Set either sub or page to be whatever the href is for
+				 * this link based on whether or not it is a subnav item.
+				 */
 				if ( $this.hasClass( 'subnav' ) ) {
 					Session.set( 'sub', $this.attr( 'href' ) );
 				} else {
