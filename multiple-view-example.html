@@ -1,0 +1,72 @@
+<head>
+  <title>multiple-view-example</title>
+</head>
+
+<body>
+	<nav>
+		<ul>
+			<li><a href="/">Default</a></li>
+			<li><a href="/one">One</a></li>
+			<li><a href="/two">Two</a></li>
+			<li><a href="/three">Three</a></li>
+		</ul>
+	</nav>
+	{{> body}}
+</body>
+
+<template name="body">
+	{{#page_is "/"}}
+		{{> default}}
+	{{/page_is}}
+	{{#page_is "/one"}}
+		{{> one}}
+	{{/page_is}}
+	{{#page_is "/two"}}
+		{{> two}}
+	{{/page_is}}
+	{{#page_is "/three"}}
+		{{> three}}
+	{{/page_is}}
+</template>
+
+<template name="default">
+	This is the default page.
+</template>
+
+<template name="one">
+	This is page one.
+	<ul>
+		<li><a class="subnav" href="/foo">Subpage foo</a></li>
+		<li><a class="subnav" href="/bar">Subpage bar</a></li>
+		<li><a class="subnav" href="/baz">Subpage baz</a></li>
+	</ul>
+	{{#sub_is "/foo"}}
+		{{> foo}}
+	{{/sub_is}}
+	{{#sub_is "/bar"}}
+		{{> bar}}
+	{{/sub_is}}
+	{{#sub_is "/baz"}}
+		{{> baz}}
+	{{/sub_is}}
+</template>
+
+<template name="foo">
+	Sub page foo
+</template>
+
+<template name="bar">
+	Sub page bar
+</template>
+
+<template name="baz">
+	Sub page baz
+</template>
+
+<template name="two">
+	This is page two.
+</template>
+
+<template name="three">
+	This is page three.
+</template>
